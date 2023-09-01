@@ -26,22 +26,7 @@ for n in arr:
         printf("2=2*1")
     elif n % 2 == 0:
         print(f"{n}={int(n/2)}*2")
-    elif n % 3 == 0:
-        print(f"{n}={int(n/3)}*3")
-    elif n % 5 == 0:
-        print(f"{n}={int(n/5)}*5")
-    elif n % 7 == 0:
-        print(f"{n}={int(n/7)}*7")
     else:
-        for i in range(9, int(n/4 + 1), 2):
-            if n % i == 0:
-                    break
-        if n % i == 0:
-            print(f"{n}={int(n/i)}*{i}")
-        else:
-            print(f"{n}={n}*2")
-
-    """else:
         max_div = math.isqrt(n) + 1
         for i in range(3, max_div, 2):
             if n % i == 0:
@@ -50,5 +35,3 @@ for n in arr:
             print(f"{n}={int(n/i)}*{i}")
         else:
             print(f"{n}={n}*1")
-    """
-
