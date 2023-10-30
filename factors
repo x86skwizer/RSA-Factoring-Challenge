@@ -2,36 +2,65 @@
 import sys
 import math
 
+def pollard_rho(n):
+    """
+    Pollard's Rho algorithm for integer factorization.
+    Returns:
+        int: A factor of n, or None if no factor is found.
+    """
+    def f(x):
+        """
+            The f() is a crucial part of the algorithm.
+        Returns:
+            `int`: The result of applying f to x.
+        """
+        return (x**2 + 1) % n
+
+    x = 2
+    y = 2
+    d = 1
+
+    while d == 1:
+        x = f(x)
+        y = f(f(y))
+        d = math.gcd(abs(x - y), n)
+
+    if d == n:
+        return None
+    else:
+        return d, n // d
+
 if len(sys.argv) < 2:
-    print("Error: file name needed")
+    print("Usage: factors <file>", file=sys.stderr)
     exit(1)
 
 try:
-    reader = open(sys.argv[1], 'r')
-except:
-    print("Error: file not found")
-    exit(1)
-
-lines = reader.read(-1)
-arr = lines.split("\n")
-
-for i, n in enumerate(arr):
-    try:
-        arr[i] = int(n)
-    except:
-        del arr[i]
-
-for n in arr:
-    if n == 2:
-        printf("2=2*1")
-    elif n % 2 == 0:
-        print(f"{n}={int(n/2)}*2")
-    else:
-        max_div = math.isqrt(n) + 1
-        for i in range(3, int(max_div), 2):
-            if n % i == 0:
-                break
-        if n % i == 0:
-            print(f"{n}={int(n/i)}*{i}")
-        else:
-            print(f"{n}={n}*1")
+    with open(sys.argv[1], "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                nb = line.strip('\n')
+                div = 2
+                flag = False
+                while div < 51:
+                    if int(nb) % div == 0:
+                        print("{:d}={:d}*{:d}".format(int(nb), int(nb) // div\
+                                , div))
+                        flag = True
+                        break
+                    div += 1
+                if flag:
+                    continue
+                factors = pollard_rho(int(nb))
+                if factors is not None:
+                    factor1, factor2 = factors
+                    print(f"{nb}={factor2}*{factor1}")
+                else:
+                    n = 51
+                    num = int(nb)
+                    while n <= math.sqrt(num):
+                        if not num % n:
+                            print("{:d}={:d}*{:d}".format(int(nb), int(nb) // n, n))
+                            break
+                        n += 1
+except Exception as msg:
+    print(msg)
